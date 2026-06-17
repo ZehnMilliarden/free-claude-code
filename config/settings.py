@@ -114,6 +114,10 @@ class Settings(BaseSettings):
     # ==================== Cerebras Inference (OpenAI-compatible) ====================
     cerebras_api_key: str = Field(default="", validation_alias="CEREBRAS_API_KEY")
 
+    # ==================== GLM Open Platform / Coding Plan ====================
+    glm_api_key: str = Field(default="", validation_alias="GLM_API_KEY")
+    glm_coding_api_key: str = Field(default="", validation_alias="GLM_CODING_API_KEY")
+
     # ==================== Messaging Platform Selection ====================
     # Valid: "telegram" | "discord" | "none"
     messaging_platform: str = Field(
@@ -174,6 +178,8 @@ class Settings(BaseSettings):
     gemini_proxy: str = Field(default="", validation_alias="GEMINI_PROXY")
     groq_proxy: str = Field(default="", validation_alias="GROQ_PROXY")
     cerebras_proxy: str = Field(default="", validation_alias="CEREBRAS_PROXY")
+    glm_proxy: str = Field(default="", validation_alias="GLM_PROXY")
+    glm_coding_proxy: str = Field(default="", validation_alias="GLM_CODING_PROXY")
 
     # ==================== Provider Rate Limiting ====================
     provider_rate_limit: int = Field(default=40, validation_alias="PROVIDER_RATE_LIMIT")

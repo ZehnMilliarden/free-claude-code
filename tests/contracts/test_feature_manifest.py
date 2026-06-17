@@ -10,6 +10,8 @@ from providers.codestral import CodestralProvider
 from providers.deepseek import DeepSeekProvider
 from providers.fireworks import FireworksProvider
 from providers.gemini import GeminiProvider
+from providers.glm import GlmProvider
+from providers.glm_coding import GlmCodingProvider
 from providers.groq import GroqProvider
 from providers.kimi import KimiProvider
 from providers.llamacpp import LlamaCppProvider
@@ -92,6 +94,8 @@ def test_provider_and_platform_registries_include_advertised_builtins() -> None:
         "opencode_go": OpenCodeProvider,
         "zai": ZaiProvider,
         "gemini": GeminiProvider,
+        "glm": GlmProvider,
+        "glm_coding": GlmCodingProvider,
         "groq": GroqProvider,
         "cerebras": CerebrasProvider,
     }

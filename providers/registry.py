@@ -136,6 +136,18 @@ def _create_cerebras(config: ProviderConfig, _settings: Settings) -> BaseProvide
     return CerebrasProvider(config)
 
 
+def _create_glm(config: ProviderConfig, _settings: Settings) -> BaseProvider:
+    from providers.glm import GlmProvider
+
+    return GlmProvider(config)
+
+
+def _create_glm_coding(config: ProviderConfig, _settings: Settings) -> BaseProvider:
+    from providers.glm_coding import GlmCodingProvider
+
+    return GlmCodingProvider(config)
+
+
 PROVIDER_FACTORIES: dict[str, ProviderFactory] = {
     "nvidia_nim": _create_nvidia_nim,
     "open_router": _create_open_router,
@@ -148,6 +160,8 @@ PROVIDER_FACTORIES: dict[str, ProviderFactory] = {
     "wafer": _create_wafer,
     "kimi": _create_kimi,
     "cerebras": _create_cerebras,
+    "glm": _create_glm,
+    "glm_coding": _create_glm_coding,
     "groq": _create_groq,
     "fireworks": _create_fireworks,
     "zai": _create_zai,

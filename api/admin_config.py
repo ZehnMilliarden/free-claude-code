@@ -252,6 +252,30 @@ FIELDS: tuple[ConfigFieldSpec, ...] = (
         ),
     ),
     ConfigFieldSpec(
+        "GLM_API_KEY",
+        "GLM API Key",
+        "providers",
+        "secret",
+        settings_attr="glm_api_key",
+        secret=True,
+        description=(
+            "GLM Open Platform pay-as-you-go API key; routes OpenAI-compatible "
+            "chat completions through https://open.bigmodel.cn/api/paas/v4."
+        ),
+    ),
+    ConfigFieldSpec(
+        "GLM_CODING_API_KEY",
+        "GLM Coding API Key",
+        "providers",
+        "secret",
+        settings_attr="glm_coding_api_key",
+        secret=True,
+        description=(
+            "GLM Coding Plan API key; routes OpenAI-compatible chat completions "
+            "through https://open.bigmodel.cn/api/coding/paas/v4."
+        ),
+    ),
+    ConfigFieldSpec(
         "LM_STUDIO_BASE_URL",
         "LM Studio Base URL",
         "providers",
@@ -404,6 +428,24 @@ FIELDS: tuple[ConfigFieldSpec, ...] = (
         "providers",
         "secret",
         settings_attr="cerebras_proxy",
+        secret=True,
+        advanced=True,
+    ),
+    ConfigFieldSpec(
+        "GLM_PROXY",
+        "GLM Proxy",
+        "providers",
+        "secret",
+        settings_attr="glm_proxy",
+        secret=True,
+        advanced=True,
+    ),
+    ConfigFieldSpec(
+        "GLM_CODING_PROXY",
+        "GLM Coding Proxy",
+        "providers",
+        "secret",
+        settings_attr="glm_coding_proxy",
         secret=True,
         advanced=True,
     ),
@@ -894,6 +936,18 @@ FIELDS: tuple[ConfigFieldSpec, ...] = (
     ConfigFieldSpec(
         "FCC_SMOKE_MODEL_CEREBRAS",
         "Smoke Cerebras Model",
+        "smoke",
+        advanced=True,
+    ),
+    ConfigFieldSpec(
+        "FCC_SMOKE_MODEL_GLM",
+        "Smoke GLM Model",
+        "smoke",
+        advanced=True,
+    ),
+    ConfigFieldSpec(
+        "FCC_SMOKE_MODEL_GLM_CODING",
+        "Smoke GLM Coding Model",
         "smoke",
         advanced=True,
     ),

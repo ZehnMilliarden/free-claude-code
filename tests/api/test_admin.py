@@ -33,6 +33,10 @@ def _clear_process_config(monkeypatch) -> None:
         "PORT",
         "LOG_FILE",
         "ZAI_BASE_URL",
+        "GLM_API_KEY",
+        "GLM_PROXY",
+        "GLM_CODING_API_KEY",
+        "GLM_CODING_PROXY",
         "CLAUDE_WORKSPACE",
         "CLAUDE_CLI_BIN",
     ):
@@ -106,6 +110,8 @@ def test_admin_config_masks_secrets_and_exposes_manifest(monkeypatch, tmp_path):
     assert "GEMINI_API_KEY" in keys
     assert "GROQ_API_KEY" in keys
     assert "CEREBRAS_API_KEY" in keys
+    assert "GLM_API_KEY" in keys
+    assert "GLM_CODING_API_KEY" in keys
     assert "ZAI_BASE_URL" not in keys
     assert "CLAUDE_WORKSPACE" not in keys
     assert "CLAUDE_CLI_BIN" not in keys
@@ -283,6 +289,56 @@ def test_admin_apply_writes_cerebras_key_and_masks_preview(monkeypatch, tmp_path
     text = env_file.read_text(encoding="utf-8")
     assert "MODEL=cerebras/llama3.1-8b" in text
     assert "CEREBRAS_API_KEY=cb-secret" in text
+
+
+def test_admin_apply_writes_glm_key_and_masks_preview(monkeypatch, tmp_path):
+    _set_home(monkeypatch, tmp_path)
+    _clear_process_config(monkeypatch)
+    app = create_app(lifespan_enabled=False)
+
+    response = _local_client(app).post(
+        "/admin/api/config/apply",
+        json={
+            "values": {
+                "MODEL": "glm/glm-4.5",
+                "GLM_API_KEY": "glm-secret",
+            }
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["applied"] is True
+    assert "GLM_API_KEY=********" in body["env_preview"]
+    env_file = tmp_path / ".fcc" / ".env"
+    text = env_file.read_text(encoding="utf-8")
+    assert "MODEL=glm/glm-4.5" in text
+    assert "GLM_API_KEY=glm-secret" in text
+
+
+def test_admin_apply_writes_glm_coding_key_and_masks_preview(monkeypatch, tmp_path):
+    _set_home(monkeypatch, tmp_path)
+    _clear_process_config(monkeypatch)
+    app = create_app(lifespan_enabled=False)
+
+    response = _local_client(app).post(
+        "/admin/api/config/apply",
+        json={
+            "values": {
+                "MODEL": "glm_coding/glm-5.2",
+                "GLM_CODING_API_KEY": "glm-coding-secret",
+            }
+        },
+    )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["applied"] is True
+    assert "GLM_CODING_API_KEY=********" in body["env_preview"]
+    env_file = tmp_path / ".fcc" / ".env"
+    text = env_file.read_text(encoding="utf-8")
+    assert "MODEL=glm_coding/glm-5.2" in text
+    assert "GLM_CODING_API_KEY=glm-coding-secret" in text
 
 
 def test_admin_apply_preserves_hidden_diagnostics_and_smoke_values(

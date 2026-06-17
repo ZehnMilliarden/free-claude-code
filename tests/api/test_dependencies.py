@@ -20,6 +20,8 @@ from providers.codestral import CodestralProvider
 from providers.deepseek import DeepSeekProvider
 from providers.exceptions import ServiceUnavailableError, UnknownProviderTypeError
 from providers.gemini import GeminiProvider
+from providers.glm import GlmProvider
+from providers.glm_coding import GlmCodingProvider
 from providers.groq import GroqProvider
 from providers.lmstudio import LMStudioProvider
 from providers.mistral import MistralProvider
@@ -68,6 +70,10 @@ def _make_mock_settings(**overrides):
     mock.groq_proxy = ""
     mock.cerebras_api_key = ""
     mock.cerebras_proxy = ""
+    mock.glm_api_key = ""
+    mock.glm_proxy = ""
+    mock.glm_coding_api_key = ""
+    mock.glm_coding_proxy = ""
     mock.nim = NimSettings()
     mock.http_read_timeout = 300.0
     mock.http_write_timeout = 10.0
@@ -346,6 +352,72 @@ async def test_get_provider_cerebras_missing_api_key():
         assert exc_info.value.status_code == 503
         assert "CEREBRAS_API_KEY" in exc_info.value.detail
         assert "cloud.cerebras.ai" in exc_info.value.detail
+
+
+@pytest.mark.asyncio
+async def test_get_provider_glm():
+    """Test that provider_type=glm returns GlmProvider."""
+    with patch("api.dependencies.get_settings") as mock_settings:
+        mock_settings.return_value = _make_mock_settings(
+            provider_type="glm",
+            glm_api_key="secret",
+        )
+
+        provider = get_provider()
+
+        assert isinstance(provider, GlmProvider)
+        assert provider._base_url == "https://open.bigmodel.cn/api/paas/v4"
+        assert provider._api_key == "secret"
+
+
+@pytest.mark.asyncio
+async def test_get_provider_glm_missing_api_key():
+    """GLM with empty API key raises HTTPException 503."""
+    with patch("api.dependencies.get_settings") as mock_settings:
+        mock_settings.return_value = _make_mock_settings(
+            provider_type="glm",
+            glm_api_key="",
+        )
+
+        with pytest.raises(HTTPException) as exc_info:
+            get_provider()
+
+        assert exc_info.value.status_code == 503
+        assert "GLM_API_KEY" in exc_info.value.detail
+        assert "open.bigmodel.cn" in exc_info.value.detail
+
+
+@pytest.mark.asyncio
+async def test_get_provider_glm_coding():
+    """Test that provider_type=glm_coding returns GlmCodingProvider."""
+    with patch("api.dependencies.get_settings") as mock_settings:
+        mock_settings.return_value = _make_mock_settings(
+            provider_type="glm_coding",
+            glm_coding_api_key="secret",
+        )
+
+        provider = get_provider()
+
+        assert isinstance(provider, GlmCodingProvider)
+        assert provider._base_url == "https://open.bigmodel.cn/api/coding/paas/v4"
+        assert provider._api_key == "secret"
+
+
+@pytest.mark.asyncio
+async def test_get_provider_glm_coding_missing_api_key():
+    """GLM Coding Plan with empty API key raises HTTPException 503."""
+    with patch("api.dependencies.get_settings") as mock_settings:
+        mock_settings.return_value = _make_mock_settings(
+            provider_type="glm_coding",
+            glm_coding_api_key="",
+        )
+
+        with pytest.raises(HTTPException) as exc_info:
+            get_provider()
+
+        assert exc_info.value.status_code == 503
+        assert "GLM_CODING_API_KEY" in exc_info.value.detail
+        assert "open.bigmodel.cn" in exc_info.value.detail
 
 
 @pytest.mark.asyncio

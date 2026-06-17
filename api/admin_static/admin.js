@@ -71,6 +71,8 @@ function providerName(providerId) {
     opencode: "OpenCode Zen",
     opencode_go: "OpenCode Go",
     zai: "Z.ai",
+    glm: "GLM",
+    glm_coding: "GLM Coding",
   };
   if (names[providerId]) return names[providerId];
   return providerId

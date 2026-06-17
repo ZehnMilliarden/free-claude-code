@@ -36,6 +36,8 @@ ZAI_DEFAULT_BASE = "https://api.z.ai/api/anthropic/v1"
 GEMINI_DEFAULT_BASE = "https://generativelanguage.googleapis.com/v1beta/openai/"
 GROQ_DEFAULT_BASE = "https://api.groq.com/openai/v1"
 CEREBRAS_DEFAULT_BASE = "https://api.cerebras.ai/v1"
+GLM_DEFAULT_BASE = "https://open.bigmodel.cn/api/paas/v4"
+GLM_CODING_DEFAULT_BASE = "https://open.bigmodel.cn/api/coding/paas/v4"
 
 
 @dataclass(frozen=True, slots=True)
@@ -170,6 +172,26 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
         proxy_attr="cerebras_proxy",
         capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
     ),
+    "glm": ProviderDescriptor(
+        provider_id="glm",
+        transport_type="openai_chat",
+        credential_env="GLM_API_KEY",
+        credential_url="https://open.bigmodel.cn/usercenter/apikeys",
+        credential_attr="glm_api_key",
+        default_base_url=GLM_DEFAULT_BASE,
+        proxy_attr="glm_proxy",
+        capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
+    ),
+    "glm_coding": ProviderDescriptor(
+        provider_id="glm_coding",
+        transport_type="openai_chat",
+        credential_env="GLM_CODING_API_KEY",
+        credential_url="https://open.bigmodel.cn/usercenter/apikeys",
+        credential_attr="glm_coding_api_key",
+        default_base_url=GLM_CODING_DEFAULT_BASE,
+        proxy_attr="glm_coding_proxy",
+        capabilities=("chat", "streaming", "tools", "thinking", "rate_limit"),
+    ),
     "groq": ProviderDescriptor(
         provider_id="groq",
         transport_type="openai_chat",
@@ -249,8 +271,8 @@ PROVIDER_CATALOG: dict[str, ProviderDescriptor] = {
 }
 
 # Key order:
-# NVIDIA NIM first (README default), DeepSeek fourth, Wafer ninth / Kimi tenth; then cerebras /
-# groq / fireworks overlap; remainder and locals last per project plan (
+# NVIDIA NIM first (README default), DeepSeek fourth, Wafer ninth / Kimi tenth; then
+# cerebras / GLM / GLM Coding / groq / fireworks overlap; remainder and locals last per project plan (
 # github.com/cheahjs/free-llm-api-resources Free Providers TOC as rough guide beyond fixed slots).
 # ``SUPPORTED_PROVIDER_IDS`` inherits this insertion order for UI and error-message listing.
 SUPPORTED_PROVIDER_IDS: tuple[str, ...] = tuple(PROVIDER_CATALOG.keys())

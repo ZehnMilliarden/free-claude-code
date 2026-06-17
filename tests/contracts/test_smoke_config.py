@@ -40,6 +40,8 @@ def _settings(**overrides):
         "gemini_api_key": "",
         "groq_api_key": "",
         "cerebras_api_key": "",
+        "glm_api_key": "",
+        "glm_coding_api_key": "",
         "fireworks_api_key": "",
         "lm_studio_base_url": "",
         "llamacpp_base_url": "",

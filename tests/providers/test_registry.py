@@ -13,6 +13,8 @@ from providers.deepseek import DeepSeekProvider
 from providers.exceptions import UnknownProviderTypeError
 from providers.fireworks import FireworksProvider
 from providers.gemini import GeminiProvider
+from providers.glm import GlmProvider
+from providers.glm_coding import GlmCodingProvider
 from providers.groq import GroqProvider
 from providers.kimi import KimiProvider
 from providers.llamacpp import LlamaCppProvider
@@ -67,6 +69,10 @@ def _make_settings(**overrides):
     mock.groq_proxy = ""
     mock.cerebras_api_key = ""
     mock.cerebras_proxy = ""
+    mock.glm_api_key = ""
+    mock.glm_proxy = ""
+    mock.glm_coding_api_key = ""
+    mock.glm_coding_proxy = ""
     mock.provider_rate_limit = 40
     mock.provider_rate_window = 60
     mock.provider_max_concurrency = 5
@@ -168,6 +174,8 @@ def test_create_provider_instantiates_each_builtin():
         gemini_api_key="test_gemini_key",
         groq_api_key="test_groq_key",
         cerebras_api_key="test_cerebras_key",
+        glm_api_key="test_glm_key",
+        glm_coding_api_key="test_glm_coding_key",
         fireworks_api_key="test_fireworks_key",
         kimi_api_key="test_kimi_key",
     )
@@ -188,6 +196,8 @@ def test_create_provider_instantiates_each_builtin():
         "gemini": GeminiProvider,
         "groq": GroqProvider,
         "cerebras": CerebrasProvider,
+        "glm": GlmProvider,
+        "glm_coding": GlmCodingProvider,
     }
 
     with (
