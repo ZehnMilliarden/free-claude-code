@@ -24,7 +24,7 @@ def provider_config():
     return ProviderConfig(
         api_key="test-key",
         base_url="https://custom.test/v1/",
-        proxy="socks5://127.0.0.1:9999",
+        proxy="socks5://127.0.0.1:8082",
         rate_limit=10,
         rate_window=60,
         http_read_timeout=600.0,

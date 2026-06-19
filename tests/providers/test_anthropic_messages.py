@@ -103,7 +103,7 @@ def provider_config():
     return ProviderConfig(
         api_key="test-key",
         base_url="https://custom.test/v1/",
-        proxy="socks5://127.0.0.1:9999",
+        proxy="socks5://127.0.0.1:8082",
         rate_limit=10,
         rate_window=60,
         http_read_timeout=600.0,
@@ -139,7 +139,7 @@ def test_init_configures_httpx_client(provider_config):
     kwargs = mock_client.call_args.kwargs
     timeout = kwargs["timeout"]
     assert kwargs["base_url"] == "https://custom.test/v1"
-    assert kwargs["proxy"] == "socks5://127.0.0.1:9999"
+    assert kwargs["proxy"] == "socks5://127.0.0.1:8082"
     assert timeout.read == 600.0
     assert timeout.write == 15.0
     assert timeout.connect == 5.0

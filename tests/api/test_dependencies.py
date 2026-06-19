@@ -439,13 +439,13 @@ async def test_get_provider_lmstudio_uses_lm_studio_base_url():
     with patch("api.dependencies.get_settings") as mock_settings:
         mock_settings.return_value = _make_mock_settings(
             provider_type="lmstudio",
-            lm_studio_base_url="http://custom:9999/v1",
+            lm_studio_base_url="http://custom:8082/v1",
         )
 
         provider = get_provider()
 
         assert isinstance(provider, LMStudioProvider)
-        assert provider._base_url == "http://custom:9999/v1"
+        assert provider._base_url == "http://custom:8082/v1"
 
 
 @pytest.mark.asyncio

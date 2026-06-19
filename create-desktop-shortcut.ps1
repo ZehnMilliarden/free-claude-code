@@ -5,7 +5,7 @@ $lnkPath = [System.IO.Path]::Combine($desktop, "Claude Code Proxy.lnk")
 $ws = New-Object -ComObject WScript.Shell
 $lnk = $ws.CreateShortcut($lnkPath)
 $lnk.TargetPath = "$env:windir\system32\cmd.exe"
-$lnk.Arguments = '/c cd /d "' + $projectDir + '" && uv run uvicorn server:app --host 127.0.0.1 --port 9999 && pause'
+$lnk.Arguments = '/c cd /d "' + $projectDir + '" && uv run uvicorn server:app --host 127.0.0.1 --port 8082 && pause'
 $lnk.WorkingDirectory = $projectDir
 $lnk.WindowStyle = 1
 

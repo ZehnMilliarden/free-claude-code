@@ -103,7 +103,7 @@ def test_proxy_timeout_config_e2e(smoke_config: SmokeConfig, tmp_path) -> None:
     env_file.write_text(
         'MODEL="open_router/test/model"\n'
         'OPENROUTER_API_KEY="key"\n'
-        'OPENROUTER_PROXY="socks5://127.0.0.1:9999"\n'
+        'OPENROUTER_PROXY="socks5://127.0.0.1:8082"\n'
         'HTTP_READ_TIMEOUT="321"\n'
         'HTTP_CONNECT_TIMEOUT="7"\n'
         'HTTP_WRITE_TIMEOUT="8"\n',
@@ -129,7 +129,7 @@ def test_proxy_timeout_config_e2e(smoke_config: SmokeConfig, tmp_path) -> None:
     )
     assert result.returncode == 0, result.stderr
     assert result.stdout.splitlines() == [
-        "socks5://127.0.0.1:9999",
+        "socks5://127.0.0.1:8082",
         "321.0",
         "7.0",
         "8.0",
