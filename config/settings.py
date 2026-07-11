@@ -301,7 +301,7 @@ class Settings(BaseSettings):
     )
 
     # ==================== Server ====================
-    host: str = "0.0.0.0"
+    host: str = "127.0.0.1"
     port: int = 8082
     # Optional server API key to protect endpoints (Anthropic-style)
     # Set via env `ANTHROPIC_AUTH_TOKEN`. When empty, no auth is required.

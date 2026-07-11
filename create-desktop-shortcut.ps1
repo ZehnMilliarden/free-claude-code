@@ -1,11 +1,12 @@
 $projectDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $desktop = [System.IO.Path]::Combine($env:USERPROFILE, "Desktop")
-$lnkPath = [System.IO.Path]::Combine($desktop, "Claude Code Proxy.lnk")
+$lnkPath = [System.IO.Path]::Combine($desktop, "Claude Code Client.lnk")
+$vbsPath = [System.IO.Path]::Combine($projectDir, "launch.vbs")
 
 $ws = New-Object -ComObject WScript.Shell
 $lnk = $ws.CreateShortcut($lnkPath)
-$lnk.TargetPath = "$env:windir\system32\cmd.exe"
-$lnk.Arguments = '/c cd /d "' + $projectDir + '" && uv run uvicorn server:app --host 127.0.0.1 --port 8082 && pause'
+$lnk.TargetPath = "$env:windir\system32\wscript.exe"
+$lnk.Arguments = """" + $vbsPath + """"
 $lnk.WorkingDirectory = $projectDir
 $lnk.WindowStyle = 1
 
@@ -17,7 +18,7 @@ if (Test-Path $iconPath) {
 $lnk.Save()
 
 if (Test-Path $lnkPath) {
-    Write-Host "Shortcut created on desktop: Claude Code Proxy.lnk"
+    Write-Host "Shortcut created on desktop: Claude Code Client.lnk"
 } else {
     Write-Host "Failed to create shortcut."
 }

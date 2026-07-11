@@ -19,7 +19,6 @@ if __name__ == "__main__":
 
     settings = get_settings()
     try:
-        # timeout_graceful_shutdown ensures uvicorn doesn't hang on task cleanup.
         uvicorn.run(
             app,
             host=settings.host,

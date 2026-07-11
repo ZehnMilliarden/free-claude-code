@@ -493,6 +493,20 @@ function showMessage(message, kind = "") {
 
 byId("validateButton").addEventListener("click", () => validate(true));
 byId("applyButton").addEventListener("click", apply);
+byId("shutdownButton").addEventListener("click", shutdownServer);
+
+async function shutdownServer() {
+  if (!confirm("Stop the proxy server?\n\nThe admin UI will become unavailable.")) return;
+  const btn = byId("shutdownButton");
+  btn.disabled = true;
+  btn.textContent = "Shutting down…";
+  try {
+    await api("/exit", { method: "POST" });
+  } catch {
+    // Server gone before response — expected.
+  }
+  showMessage("Server is shutting down…", "ok");
+}
 
 load().catch((error) => {
   showMessage(error.message, "error");

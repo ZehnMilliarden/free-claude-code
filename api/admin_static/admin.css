@@ -288,6 +288,21 @@ textarea {
   color: #797067;
 }
 
+.danger-button {
+  min-height: 34px;
+  border-radius: 8px;
+  padding: 7px 12px;
+  cursor: pointer;
+  font-weight: 700;
+  border: 1px solid var(--error);
+  background: transparent;
+  color: var(--error);
+}
+
+.danger-button:hover {
+  background: rgba(255, 116, 108, 0.12);
+}
+
 .form-sections {
   display: grid;
   gap: 18px;

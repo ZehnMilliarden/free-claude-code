@@ -1,6 +1,16 @@
 """FastAPI route handlers."""
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response
+import os
+import threading
+import time
+
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Request,
+    Response,
+)
 from loguru import logger
 
 from config.settings import Settings
@@ -260,3 +270,26 @@ async def stop_cli(request: Request, _auth=Depends(require_api_key)):
     )
     logger.info("STOP_CLI: source=handler cancelled_count={}", count)
     return {"status": "stopped", "cancelled_count": count}
+
+
+@router.post("/exit")
+async def exit_server(request: Request):
+    """Gracefully shut down the entire proxy server process.
+
+    Only accessible from the local machine — no API key required.
+    """
+    client_host = request.client.host if request.client else None
+    if client_host not in ("127.0.0.1", "::1", "localhost", "::ffff:127.0.0.1"):
+        raise HTTPException(status_code=403, detail="Exit API is local-only")
+
+    logger.info("EXIT: shutdown requested via API")
+
+    # Spawn a short-lived thread that calls os._exit after the response is sent.
+    # os._exit(0) terminates the process unconditionally on all platforms.
+    threading.Thread(
+        target=lambda: (time.sleep(0.5), os._exit(0)),
+        daemon=False,
+        name="exit-delay",
+    ).start()
+
+    return {"status": "exiting"}
